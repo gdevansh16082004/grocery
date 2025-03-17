@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import axios from "axios"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, CreditCard, Smartphone, Check } from "lucide-react"
@@ -11,8 +11,8 @@ import { Separator } from "@/components/ui/separator"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { useCart } from "@/components/cart/cart-context"
-import { useOrders } from "@/components/orders/order-context"
+import { useCart } from "@/components/userComponents/cart/cart-context"
+import { useOrders } from "@/components/userComponents/orders/order-context"
 import { useRouter, useSearchParams } from "next/navigation"
 
 const DELIVERY_SLOTS = [
@@ -40,23 +40,33 @@ export default function CheckoutPage() {
     }
   }, [items.length, isComplete, router])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsProcessing(true)
 
     // Calculate total with tax
     const total = subtotal + subtotal * 0.08
 
-    // Simulate payment processing
-    setTimeout(() => {
+    try {
+      await axios.post("/api/orders", {
+        items,
+        total,
+        storeId,
+        paymentMethod,
+        deliverySlot,
+      })
+
       // Add the order to history
       addOrder(items, total, storeId)
-
-      setIsProcessing(false)
       setIsComplete(true)
       clearCart()
-    }, 2000)
+    } catch (error) {
+      console.error("Order submission failed", error)
+    } finally {
+      setIsProcessing(false)
+    }
   }
+
 
   if (isComplete) {
     return (

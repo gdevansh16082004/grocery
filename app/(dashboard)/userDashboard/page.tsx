@@ -4,20 +4,20 @@ import axios from "axios";
 import { StoreGrid } from "@/components/userComponents/store/store-grid";
 
 export default function HomePage() {
-  const [stores, setStores] = useState([]);
+//   const [stores, setStores] = useState([]);
 
-  useEffect(() => {
-    const fetchStores = async () => {
-      try {
-        const response = await axios.get("/api/User/AllStores"); // API route to get all sellers
-        setStores(response.data.sellers);
-      } catch (error) {
-        console.error("Error fetching stores:", error);
-      }
-    };
+//   useEffect(() => {
+//     const fetchStores = async () => {
+//       try {
+//         const response = await axios.get("/api/User/AllStores"); // API route to get all sellers
+//         setStores(response.data.sellers);
+//       } catch (error) {
+//         console.error("Error fetching stores:", error);
+//       }
+//     };
 
-    fetchStores();
-  }, []);
+//     fetchStores();
+//   }, []);
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -29,7 +29,7 @@ export default function HomePage() {
         </p>
       </div>
 
-      <StoreGrid stores={stores} />
+      <StoreGrid />
     </main>
   );
 }

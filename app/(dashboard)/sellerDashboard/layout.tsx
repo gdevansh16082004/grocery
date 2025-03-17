@@ -19,7 +19,9 @@ export default function RootLayout({
           <SidebarProvider>
             <div className="flex min-h-screen">
               <DashboardSidebar />
-              <main className="flex-1">{children}</main>
+              <main className="flex-1">
+                {children}
+                </main>
             </div>
           </SidebarProvider>
       </body>

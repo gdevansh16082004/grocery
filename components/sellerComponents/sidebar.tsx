@@ -57,9 +57,9 @@ export function DashboardSidebar() {
       href: "/sellerDashboard/promotions",
     },
     {
-      title: "Inventory",
+      title: "Add Product",
       icon: Warehouse,
-      href: "/sellerDashboard/inventory",
+      href: "/sellerDashboard/AddProduct",
     },
   ]
 
