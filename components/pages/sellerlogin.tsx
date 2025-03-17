@@ -1,16 +1,96 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Building2, Clock, Mail, MapPin, Phone } from "lucide-react"
+import { useState } from "react";
+// import { Building2, Clock, Mail, MapPin, Phone } from "lucide-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import Router from "next/router";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SellerRegistrationForm() {
-  const [activeTab, setActiveTab] = useState("register")
+  const [activeTab, setActiveTab] = useState("register");
+
+  // State for registration
+  const [formData, setFormData] = useState({
+    storename: "",
+    address: "",
+    contact: "",
+    hours: "",
+    email: "",
+    password: "",
+  });
+
+  // State for login
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSignup = async () => {
+    try {
+      if (!formData.storename || !formData.email || !formData.password) {
+        toast.error("Please fill in all required fields.");
+        return;
+      }
+
+      const response = await axios.post("/api/selregister", {
+        name: formData.storename,
+        address: formData.address,
+        contact: formData.contact,
+        operatingHours: formData.hours,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (response.status === 201) {
+        toast.success("Seller registered successfully!");
+        // Router.push('/sellerDashboard')
+        // setActiveTab("login");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("Error registering seller. Please try again.");
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      if (!loginData.email || !loginData.password) {
+        toast.error("Please enter email and password.");
+        return;
+      }
+
+      const response = await axios.post("/api/selogin", {
+        email: loginData.email,
+        password: loginData.password,
+      });
+
+      if (response.status === 200) {
+        toast.success("Login successful!");
+        // Router.push('/sellerDashboard');
+        // Redirect or store session token as needed
+
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Invalid email or password.");
+    }
+  };
 
   return (
     <Card className="w-full max-w-md shadow-md">
@@ -25,79 +105,26 @@ export default function SellerRegistrationForm() {
             <CardDescription>Create a seller account to start selling your products on our platform.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="store-name" className="text-slate-700">
-                Store Name
-              </Label>
-              <div className="relative">
-                <Building2 className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                <Input id="store-name" placeholder="Your Store Name" className="pl-10 rounded-md border-slate-300" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="address" className="text-slate-700">
-                Address
-              </Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                <Input id="address" placeholder="Store Address" className="pl-10 rounded-md border-slate-300" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="contact" className="text-slate-700">
-                Contact Number
-              </Label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+            {["storename", "address", "contact", "hours", "email", "password"].map((field, index) => (
+              <div key={index} className="space-y-2">
+                <Label htmlFor={field} className="text-slate-700">
+                  {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1")}
+                </Label>
                 <Input
-                  id="contact"
-                  type="tel"
-                  placeholder="Contact Number"
-                  className="pl-10 rounded-md border-slate-300"
+                  id={field}
+                  type={field === "password" ? "password" : "text"}
+                  placeholder={field === "hours" ? "e.g. 9:00 AM - 6:00 PM" : `Enter ${field}`}
+                  className="rounded-md border-slate-300"
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleInputChange}
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="hours" className="text-slate-700">
-                Operating Hours
-              </Label>
-              <div className="relative">
-                <Clock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                <Input id="hours" placeholder="e.g. 9:00 AM - 6:00 PM" className="pl-10 rounded-md border-slate-300" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-700">
-                Email
-              </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  className="pl-10 rounded-md border-slate-300"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700">
-                Password
-              </Label>
-              <Input id="password" type="password" placeholder="••••••••" className="rounded-md border-slate-300" />
-            </div>
+            ))}
           </CardContent>
           <CardFooter className="flex mt-2 flex-col space-y-4">
-            <Button className="w-full bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2">
+            <Button onClick={handleSignup} className="w-full bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2">
               Register Store
             </Button>
-            <p className="text-sm text-slate-600 text-center">
-              Already have an account?{" "}
-              <Button variant="link" className="p-0 text-gray-900 font-medium" onClick={() => setActiveTab("login")}>
-                Login
-              </Button>
-            </p>
           </CardFooter>
         </TabsContent>
         <TabsContent value="login">
@@ -106,39 +133,29 @@ export default function SellerRegistrationForm() {
             <CardDescription>Login to your seller account to manage your store.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="login-email" className="text-slate-700">
-                Email
-              </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+            {["email", "password"].map((field, index) => (
+              <div key={index} className="space-y-2">
+                <Label htmlFor={field} className="text-slate-700">
+                  {field.charAt(0).toUpperCase() + field.slice(1)}
+                </Label>
                 <Input
-                  id="login-email"
-                  type="email"
-                  placeholder="your@email.com"
-                  className="pl-10 rounded-md border-slate-300"
+                  id={field}
+                  type={field === "password" ? "password" : "email"}
+                  placeholder={`Enter ${field}`}
+                  className="rounded-md border-slate-300"
+                  value={loginData[field as keyof typeof loginData]}
+                  onChange={handleLoginChange}
                 />
               </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700">
-                Password
-              </Label>
-              <Input id="password" type="password" placeholder="••••••••" className="rounded-md border-slate-300" />
-            </div>
+            ))}
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2">Login</Button>
-            <p className="text-sm text-slate-600 text-center">
-              Don&apos;t have an account?{" "}
-              <Button variant="link" className="p-0 text-gray-900 font-medium" onClick={() => setActiveTab("register")}>
-                Register
-              </Button>
-            </p>
+            <Button onClick={handleLogin} className="w-full bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2">
+              Login
+            </Button>
           </CardFooter>
         </TabsContent>
       </Tabs>
     </Card>
-  )
+  );
 }
-
