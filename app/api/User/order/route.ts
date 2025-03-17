@@ -4,47 +4,50 @@ import { authOptions } from "@/lib/authoptions";
 import { connectToDatabase } from "@/lib/db";
 import Order from "@/lib/models/orders";
 import Item from "@/lib/models/item";
-import User from "@/lib/models/user"; // Import the User model
+import User from "@/lib/models/user";
 
 export async function POST(req: NextRequest) {
   await connectToDatabase();
   const session = await getServerSession(authOptions);
 
-//   if (!session || !session.user) {
-//     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-//   }
+  if (!session || !session.user) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   try {
-    const { item, quantity, deliverySlot, seller, address } = await req.json();
+    const { items, deliverySlot, seller, address } = await req.json();
 
-    if (!item || !quantity || !seller || !address) {
+    if (!items || !Array.isArray(items) || items.length === 0 || !seller || !address) {
       return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
 
-    // Check if the item exists
-    const foundItem = await Item.findById(item);
-    if (!foundItem) {
-      return NextResponse.json({ message: "Item not found" }, { status: 404 });
+    let totalBill = 0;
+    const orderItems = [];
+
+    for (const { item, quantity } of items) {
+      const foundItem = await Item.findById(item);
+      if (!foundItem) {
+        return NextResponse.json({ message: `Item with ID ${item} not found` }, { status: 404 });
+      }
+      orderItems.push({ item: foundItem._id, quantity });
+      totalBill += foundItem.price * quantity;
     }
 
-    const totalBill = foundItem.price * quantity;
-
-    // Create the order
+    // Create the order with an array of items
     const order = await Order.create({
-      item: foundItem._id,
-      quantity,
+      items: orderItems,
       bill: totalBill,
       deliverySlot,
       address,
       seller: seller,
-       // Store the user ID who placed the order
+    
     });
 
-    // ✅ Push order ID into user's orders array using $push
+    // Push order ID into user's orders array
     await User.findByIdAndUpdate(
       session.user.id,
-      { $push: { orders: order._id } }, // Push order ID to orders array
-      { new: true } // Return updated document
+      { $push: { orders: order._id } },
+      { new: true }
     );
 
     return NextResponse.json(

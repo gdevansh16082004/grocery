@@ -2,8 +2,10 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 
 // Interface for the Order Model
 export interface IOrders extends Document {
-  item: Types.ObjectId; // Reference to Item model
-  quantity: number;
+  items: {
+    item: Types.ObjectId; // Reference to Item model
+    quantity: number;
+  }[]; // Array of items
   bill: number;
   deliverySlot: string;
   address: string;
@@ -16,8 +18,12 @@ export interface IOrders extends Document {
 // Orders Schema
 const OrdersSchema = new Schema<IOrders>(
   {
-    item: { type: Schema.Types.ObjectId, ref: "Item", required: true }, // Reference to Item model
-    quantity: { type: Number, required: true, min: 1 },
+    items: [
+      {
+        item: { type: Schema.Types.ObjectId, ref: "Item", required: true },
+        quantity: { type: Number, required: true, min: 1 },
+      },
+    ], // Array of item references with quantity
     bill: { type: Number, required: true },
     deliverySlot: { type: String, required: true },
     address: { type: String, required: false },
