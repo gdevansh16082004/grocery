@@ -1,22 +1,33 @@
-import { SearchBar } from "@/components/userComponents/search-bar"
-import { CategoryFilter } from "@/components/userComponents/category-filter"
-import { ProductGrid } from "@/components/userComponents/product-grid"
-import { connectToDatabase } from "@/lib/db"
-import Seller from "@/lib/models/seller"
-import item from "@/lib/models/item"
+import { SearchBar } from "@/components/userComponents/search-bar";
+import { CategoryFilter } from "@/components/userComponents/category-filter";
+import { ProductGrid } from "@/components/userComponents/product-grid";
+import { connectToDatabase } from "@/lib/db";
+import Seller from "@/lib/models/seller";
+import item from "@/lib/models/item";
+import { notFound } from "next/navigation"; // ✅ Handle 404 cases properly
 
-export  default async  function StorePage({ params }: { params: { storeId: string } }) {
-  console.log(params)
-  const storeId = params.storeId
-  await connectToDatabase()
-  const store = await Seller.findById(storeId)
+interface StorePageProps {
+  params: {
+    storeId: string;
+  };
+}
 
-  const items = await item.find({ seller: storeId })
-  console.log(items)
-  
+export default async function StorePage({ params }: StorePageProps) {
+  console.log(params);
+  const { storeId } = params;
 
-  
-  const categories = [...new Set(items.map((product) => product.category))]
+  await connectToDatabase();
+  const store = await Seller.findById(storeId);
+
+  if (!store) {
+    return notFound(); // ✅ Return 404 if store is not found
+  }
+
+  const items = await item.find({ seller: storeId });
+
+  console.log(items);
+
+  const categories = [...new Set(items.map((product) => product.category))];
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -38,6 +49,5 @@ export  default async  function StorePage({ params }: { params: { storeId: strin
         </div>
       </div>
     </main>
-  )
+  );
 }
-
