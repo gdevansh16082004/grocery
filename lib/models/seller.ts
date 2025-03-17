@@ -8,7 +8,6 @@ export interface ISeller extends Document {
     address: string;
     operatingHours: string;
     contact: string;
-
     createdAt: Date;
     updatedAt: Date;
 }
