@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-// import { Building2, Clock, Mail, MapPin, Phone } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // ✅ Correct Router Import
 import axios from "axios";
 import toast from "react-hot-toast";
-import Router from "next/router";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +12,10 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SellerRegistrationForm() {
+  const router = useRouter(); // ✅ Initialize Router
   const [activeTab, setActiveTab] = useState("register");
 
-  // State for registration
+  // ✅ State for Registration Form
   const [formData, setFormData] = useState({
     storename: "",
     address: "",
@@ -25,7 +25,7 @@ export default function SellerRegistrationForm() {
     password: "",
   });
 
-  // State for login
+  // ✅ State for Login Form
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -41,6 +41,7 @@ export default function SellerRegistrationForm() {
     setLoginData((prev) => ({ ...prev, [id]: value }));
   };
 
+  // ✅ Handle Signup & Redirect to Dashboard
   const handleSignup = async () => {
     try {
       if (!formData.storename || !formData.email || !formData.password) {
@@ -59,8 +60,7 @@ export default function SellerRegistrationForm() {
 
       if (response.status === 201) {
         toast.success("Seller registered successfully!");
-        // Router.push('/sellerDashboard')
-        // setActiveTab("login");
+        router.push("/sellerDashboard"); // ✅ Redirect after success
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -68,6 +68,7 @@ export default function SellerRegistrationForm() {
     }
   };
 
+  // ✅ Handle Login & Redirect to Dashboard
   const handleLogin = async () => {
     try {
       if (!loginData.email || !loginData.password) {
@@ -82,9 +83,7 @@ export default function SellerRegistrationForm() {
 
       if (response.status === 200) {
         toast.success("Login successful!");
-        // Router.push('/sellerDashboard');
-        // Redirect or store session token as needed
-
+        router.push("/sellerDashboard"); // ✅ Redirect after success
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -99,6 +98,8 @@ export default function SellerRegistrationForm() {
           <TabsTrigger value="register">Register</TabsTrigger>
           <TabsTrigger value="login">Login</TabsTrigger>
         </TabsList>
+
+        {/* 🔹 REGISTER TAB */}
         <TabsContent value="register">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-slate-800">Register Your Store</CardTitle>
@@ -127,6 +128,8 @@ export default function SellerRegistrationForm() {
             </Button>
           </CardFooter>
         </TabsContent>
+
+        {/* 🔹 LOGIN TAB */}
         <TabsContent value="login">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-slate-800">Seller Login</CardTitle>

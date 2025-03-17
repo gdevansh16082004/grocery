@@ -5,9 +5,9 @@ export interface IUser extends Document {
   email: string;
   image: string;
   password?: string;
-  orders: object;
-  address: string;
-  cart: object;
+  orders: mongoose.Schema.Types.ObjectId[];
+  
+  cart: mongoose.Schema.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,9 +18,9 @@ const UserSchema = new Schema<IUser>(
     email: { type: String, unique: true, required: true },
     image: { type: String, required: true, default: "https://example.com/default-image.png" }, // ✅ Default image added
     password: { type: String, required: false },
-    orders: { type: Object, required: false },
-    address: { type: String, required: false },
-    cart: { type: Object, required: false },
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+    
+    cart: [{ type: Object, ref:"Item" }],
   },
   { timestamps: true }
 );

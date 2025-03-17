@@ -30,8 +30,9 @@ export async function POST(req: NextRequest) {
     const quantity = Number(formData.get("quantity"));
     const description = formData.get("description") as string;
     const file = formData.get("file") as Blob | null;
+    const category = formData.get("category") as string;
 
-    if (!name || !price || !quantity || !description || !file) {
+    if (!name || !price || !quantity || !description ||!file||!category) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
       price,
       quantity,
       description,
+      category,
       images: [uploadResponse.secure_url], // Store Cloudinary URL
       seller: decoded.id // Store seller's ID from token
     });

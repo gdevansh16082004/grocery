@@ -6,6 +6,7 @@ export interface IItem extends Document {
   quantity: number;
   images: string[]; // Allow multiple images
   description: string;
+  category: string; // Added 'category' field to Item model
   seller: mongoose.Schema.Types.ObjectId; // Reference to Seller model
   createdAt: Date;
   updatedAt: Date;
@@ -18,6 +19,7 @@ const ItemSchema = new Schema<IItem>(
     quantity: { type: Number, required: true },
     images: { type: [String], required: true }, // Allow multiple images
     description: { type: String, required: true },
+    category: { type: String, required: true }, // Added 'category' field
     seller: { type: Schema.Types.ObjectId, ref: "Seller", required: true }, // Ensure every item has a seller
   },
   { timestamps: true } // Automatically manages createdAt & updatedAt
