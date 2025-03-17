@@ -60,7 +60,7 @@ export default function SellerRegistrationForm() {
 
       if (response.status === 201) {
         toast.success("Seller registered successfully!");
-        router.push("/sellerDashboard"); // ✅ Redirect after success
+        router.push('/sellerDashboard');; // ✅ Redirect after success
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -83,7 +83,7 @@ export default function SellerRegistrationForm() {
 
       if (response.status === 200) {
         toast.success("Login successful!");
-        router.push("/sellerDashboard"); // ✅ Redirect after success
+        router.push(`/sellerDashboard`)// ✅ Redirect after success
       }
     } catch (error) {
       console.error("Login error:", error);

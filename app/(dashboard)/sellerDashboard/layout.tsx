@@ -1,6 +1,6 @@
 import type React from "react"
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { DashboardSidebar } from "@/components/sellerComponents/sidebar"
+import {DashboardSidebar} from "@/components/sellerComponents/sidebar"
 import "@/app/globals.css"
 
 export const metadata = {
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body>
           <SidebarProvider>
             <div className="flex min-h-screen">
-              <DashboardSidebar />
+              <DashboardSidebar  />
               <main className="flex-1">
                 {children}
                 </main>

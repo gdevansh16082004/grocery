@@ -3,40 +3,26 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-const orders = [
-  {
-    id: "ORD-001",
-    customer: "Alex Johnson",
-    amount: "$129.99",
-    status: "Delivered",
-  },
-  {
-    id: "ORD-002",
-    customer: "Sarah Williams",
-    amount: "$89.50",
-    status: "Processing",
-  },
-  {
-    id: "ORD-003",
-    customer: "Michael Brown",
-    amount: "$245.00",
-    status: "Pending",
-  },
-  {
-    id: "ORD-004",
-    customer: "Emily Davis",
-    amount: "$74.99",
-    status: "Canceled",
-  },
-  {
-    id: "ORD-005",
-    customer: "James Wilson",
-    amount: "$189.99",
-    status: "Delivered",
-  },
-]
 
-export function RecentOrders() {
+interface IOrders {
+  
+    //  _id: new ObjectId('67d863216c37e14eeb046133'),
+    
+  
+    bill: number
+    deliverySlot: String
+    address: String
+    
+    status: String;
+    
+  
+}
+interface RecentOrdersProps {
+  orders: IOrders[]; // Accept an object with an orders array
+}
+
+export function RecentOrders({ orders }: RecentOrdersProps) {
+  
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -52,18 +38,18 @@ export function RecentOrders() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Customer</TableHead>
+              <TableHead>Order Slot</TableHead>
+              <TableHead>Address</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell className="font-medium">{order.id}</TableCell>
-                <TableCell>{order.customer}</TableCell>
-                <TableCell>{order.amount}</TableCell>
+            {orders.map((order:IOrders) => (
+              <TableRow key={order.bill}>
+                <TableCell className="font-medium">{order.deliverySlot}</TableCell>
+                <TableCell>{order.address}</TableCell>
+                <TableCell>{order.bill}</TableCell>
                 <TableCell>
                   <Badge
                     variant="outline"

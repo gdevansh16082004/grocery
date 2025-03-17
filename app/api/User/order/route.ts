@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       deliverySlot,
       address,
       seller: seller,
-    
+       // Store the user ID who placed the order
     });
 
     // ✅ Push order ID into user's orders array using $push

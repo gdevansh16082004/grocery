@@ -27,8 +27,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+
 export function DashboardSidebar() {
   const pathname = usePathname()
+  
+
+
+
 
   const navigationItems = [
     {
@@ -100,7 +105,7 @@ export function DashboardSidebar() {
                     <AvatarImage src="/placeholder-user.jpg" alt="User" />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
-                  <span>John Doe</span>
+                  <span>name</span>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-56">
