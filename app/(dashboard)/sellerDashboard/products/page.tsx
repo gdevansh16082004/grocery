@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import Seller from "@/lib/models/seller";
 import { connectToDatabase } from "@/lib/db";
 import item from "@/lib/models/item";
-import { Button } from "@/components/ui/button";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface User {

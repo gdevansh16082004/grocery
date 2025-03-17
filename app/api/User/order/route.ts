@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     // Push order ID into user's orders array
     await User.findByIdAndUpdate(
-      session.user.id,
+      "67d7baa198ad64d2a66ba4d7",
       { $push: { orders: order._id } },
       { new: true }
     );

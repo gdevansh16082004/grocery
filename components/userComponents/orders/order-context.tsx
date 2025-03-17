@@ -65,7 +65,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
             },
           ],
           total: 8.52, // (1.99 * 2 + 3.99) * 1.08 (with tax)
-          status: "delivered" as "delivered",
+          status: "delivered" as const,
           deliveryDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(), // 6 days ago
           storeId: "store-1",
         },
@@ -95,7 +95,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
             },
           ],
           total: 9.64, // (2.99 + 2.99 * 2) * 1.08 (with tax)
-          status: "processing" as "processing",
+          status: "processing" as const,
           storeId: "store-2",
         },
       ]

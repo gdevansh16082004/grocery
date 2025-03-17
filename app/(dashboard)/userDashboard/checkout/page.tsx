@@ -70,7 +70,7 @@ export default function CheckoutPage() {
           </CardHeader>
           <CardContent>
             <p className="mb-4">
-              Thank you for your order. We've received your payment and will start preparing your groceries.
+              Thank you for your order. We ve received your payment and will start preparing your groceries.
             </p>
             <p className="text-muted-foreground mb-6">Your order will be delivered during your selected time slot.</p>
           </CardContent>

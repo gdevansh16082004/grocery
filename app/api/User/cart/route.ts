@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     // ✅ Push item ID into user's cart array using $push
     await User.findByIdAndUpdate(
-      session.user.id,
+      "67d7baa198ad64d2a66ba4d7",
       { $push: { cart: item } }, // Push item ID to cart array
       { new: true } // Return updated document
     );

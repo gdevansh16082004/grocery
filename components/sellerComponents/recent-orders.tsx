@@ -10,10 +10,10 @@ interface IOrders {
     
   
     bill: number
-    deliverySlot: String
-    address: String
+    deliverySlot: string
+    address: string
     
-    status: String;
+    status: string;
     
   
 }

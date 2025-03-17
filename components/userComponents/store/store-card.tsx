@@ -10,14 +10,14 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 interface StoreCardProps {
   store: {
     _id: string
-    name: String;
+    name: string;
     
-    email: String
+    email: string
   
   
-    address: String
-    operatingHours: String,
-    contact: String,
+    address: string
+    operatingHours: string,
+    contact: string,
     
   };
 }

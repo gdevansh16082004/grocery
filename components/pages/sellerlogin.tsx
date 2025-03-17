@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ Correct Router Import
 import axios from "axios";
 import toast from "react-hot-toast";

@@ -1,71 +1,69 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/lib/models/user";
+import { JWT } from "next-auth/jwt";
+import { Session } from "next-auth";
 
-export const authOptions = {
+// Define a custom user type that includes an ID
+interface CustomUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
+
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    //   profile(profile) {
-        
-    //     return {
-    //       id: profile.sub,
-    //       name: profile.name,
-    //       email: profile.email,
-    //       image: profile.picture || "https://example.com/default-image.png", // Ensure image is always present
-    //     };
-    //   },
-     }),
+    }),
   ],
 
   callbacks: {
-    async signIn({ user }: { user: any }) {
-      // console.log("🟢 User received in signIn callback:", user);
-
+    async signIn({ user }: { user: CustomUser }) {
       await connectToDatabase();
       let existingUser = await User.findOne({ email: user.email });
 
       if (!existingUser) {
-        // console.log("🟢 Creating new user in DB...");
         existingUser = await User.create({
           name: user.name,
           email: user.email,
           image: user.image || "https://example.com/default-image.png",
         });
-      } else {
-        // console.log("🟢 User already exists, checking image...");
-        if (!existingUser.image) {
-          existingUser.image = user.image;
-          await existingUser.save();
-          // console.log("🟢 Updated user image in DB!");
-        }
+      } else if (!existingUser.image) {
+        existingUser.image = user.image;
+        await existingUser.save();
       }
 
-      // console.log("🟢 Final User in DB:", existingUser);
       return true;
     },
 
-    async jwt({ token, user }: { token: any, user: any }) {
+    async jwt({ token, user }: { token: JWT; user?: CustomUser }) {
       if (user) {
-        // console.log("🟢 User inside JWT callback:", user);
-        token.id = user.id;
-        token.image = user.image; // Ensure image is stored in token
+        token.id = user.id; // Ensure ID is stored in token
+        token.image = user.image ?? null; // Handle possible undefined values
       }
       return token;
     },
 
-    async session({ session, token }: { session: any, token: any }) {
-      session.user.id = token.id;
-      session.user.image = token.image; // Pass image in session
-      return session;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as string, // Ensure TypeScript knows it's a string
+          image: token.image as string | null,
+        },
+      };
     },
 
-    async redirect({ url, baseUrl }: { url: string, baseUrl: string }) {
-      return "/userDashboard"; // Redirect to home page after login
+    async redirect() {
+      return "/userDashboard";
     },
   },
+
   secret: process.env.NEXTAUTH_SECRET,
 };
 

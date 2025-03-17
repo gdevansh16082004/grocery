@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from "react"
 import { useDropzone } from "react-dropzone"
-import { X, Upload, Edit } from "lucide-react"
+import { X, Upload } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -100,7 +100,7 @@ console.log("Image:", image)
       
 
       const res = await axios.post("/api/Seller/AddProduct", formData )
-      
+
 
       toast.success("Item added successfully!")
       console.log("Response:", res.data)
