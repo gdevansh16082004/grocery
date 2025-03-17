@@ -1,6 +1,6 @@
 import mongoose, { Connection } from "mongoose";
 
-const MONGODB_URI: string | undefined = process.env.MONGODB_URI;
+const MONGODB_URI: string = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
@@ -11,11 +11,12 @@ interface MongooseCache {
   promise: Promise<Connection> | null;
 }
 
-// Use a global variable to cache the connection
-let cached: MongooseCache = (global as any)._mongooseCache || { conn: null, promise: null };
+// Use a global cache without `var`
+const globalCache: Record<string, MongooseCache> = globalThis as unknown as Record<string, MongooseCache>;
+const cached: MongooseCache = globalCache._mongooseCache ?? { conn: null, promise: null };
 
-// Store it in global object for reusability across hot reloads
-(global as any)._mongooseCache = cached;
+// Store the cache in `globalThis` for reusability across hot reloads
+globalCache._mongooseCache = cached;
 
 export async function connectToDatabase(): Promise<Connection> {
   if (cached.conn) {
@@ -24,7 +25,7 @@ export async function connectToDatabase(): Promise<Connection> {
 
   if (!cached.promise) {
     console.log("Connecting to MongoDB...");
-    cached.promise = mongoose.connect(MONGODB_URI as string).then((mongoose) => mongoose.connection);
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => mongoose.connection);
   }
 
   cached.conn = await cached.promise;

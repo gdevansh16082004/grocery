@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 College-Centric Grocery Delivery System
 
-## Getting Started
+## 🚀 About This Project
+This is a **Web2-based grocery delivery system** tailored for college students and sellers. The platform allows sellers to manage their stores and products while providing users with a seamless shopping experience.
 
-First, run the development server:
+## 🌟 Features Implemented
+### 🔐 Authentication
+- **Google Authentication** using NextAuth.js for user login 
+- Secure session management
+- JWT-based authentication with MongoDB for seller
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🏪 Seller Dashboard
+- **Manage store & products**
+- View **recent orders** and **sales data**
+- Fetch seller-specific products from MongoDB
+- Implemented **server-side rendering (SSR)** for optimized performance
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 📦 Product Management
+- Sellers can **add products**
+- Image uploads handled via **Cloudinary**
+- Products are stored in **MongoDB**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🛍️ User Shopping Experience
+- **Product search & filtering**
+- **Category-based navigation**
+- View **store details** dynamically using Next.js **dynamic routing**
+- Secure checkout process
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🏗️ Tech Stack & Tools Used
+- **Frontend:** Next.js (App Router) + TypeScript
+- **Backend:** Node.js + Express.js (via Next.js API routes)
+- **Database:** MongoDB (via Mongoose ORM)
+- **Authentication:** NextAuth.js (Google Auth)
+- **Image Hosting:** Cloudinary
+- **Styling:** Tailwind CSS + shadcn/ui
+- **UI Components:** shadcn/ui + v0.dev (by Vercel)
 
-## Learn More
+## 🛠️ Installation & Setup
+1. Clone the repo:
+   ```sh
+   git clone https://github.com/gdevansh16082004/grocery.git
+   ```
+2. Install dependencies:
+   ```sh
+   cd your-project-folder
+   npm install
+   ```
+3. Set up environment variables in a `.env.local` file:
+   ```env
+   MONGODB_URI=your-mongodb-uri
+   NEXTAUTH_SECRET=your-next-auth-secret
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
+   CLOUDINARY_CLOUD_NAME=your-cloudinary-name
+   CLOUDINARY_API_KEY=your-cloudinary-api-key
+   CLOUDINARY_API_SECRET=your-cloudinary-api-secret
+   ```
+4. Run the development server:
+   ```sh
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser. 🚀
 
-To learn more about Next.js, take a look at the following resources:
+## 📜 Credits
+- **[shadcn/ui](https://ui.shadcn.com/)** - UI Components
+- **[v0.dev by Vercel](https://v0.dev/)** - AI-powered UI generation
+- **[Cloudinary](https://cloudinary.com/)** - Image hosting
+- **[Google Authentication](https://developers.google.com/identity)** - OAuth login via NextAuth.js
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
