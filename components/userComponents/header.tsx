@@ -11,7 +11,7 @@ export function Header() {
           Fresh Groceries
         </Link>
         <div className="flex items-center gap-4">
-          <Link href="/order-history">
+          <Link href="/userDashboard/order-history">
             <Button variant="ghost" size="icon" className="relative">
               <Clock className="h-5 w-5" />
             </Button>

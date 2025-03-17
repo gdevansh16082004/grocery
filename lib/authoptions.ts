@@ -63,7 +63,7 @@ export const authOptions = {
     },
 
     async redirect({ url, baseUrl }: { url: string, baseUrl: string }) {
-      return "/"; // Redirect to home page after login
+      return "/userDashboard"; // Redirect to home page after login
     },
   },
   secret: process.env.NEXTAUTH_SECRET,

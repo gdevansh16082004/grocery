@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import axios from "axios"
+
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowLeft, CreditCard, Smartphone, Check } from "lucide-react"
@@ -36,37 +36,27 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (items.length === 0 && !isComplete) {
-      router.push("/cart")
+      router.push("/userDashboard/cart")
     }
   }, [items.length, isComplete, router])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsProcessing(true)
 
     // Calculate total with tax
     const total = subtotal + subtotal * 0.08
 
-    try {
-      await axios.post("/api/orders", {
-        items,
-        total,
-        storeId,
-        paymentMethod,
-        deliverySlot,
-      })
-
+    // Simulate payment processing
+    setTimeout(() => {
       // Add the order to history
       addOrder(items, total, storeId)
+
+      setIsProcessing(false)
       setIsComplete(true)
       clearCart()
-    } catch (error) {
-      console.error("Order submission failed", error)
-    } finally {
-      setIsProcessing(false)
-    }
+    }, 2000)
   }
-
 
   if (isComplete) {
     return (
@@ -85,7 +75,7 @@ export default function CheckoutPage() {
             <p className="text-muted-foreground mb-6">Your order will be delivered during your selected time slot.</p>
           </CardContent>
           <CardFooter className="flex flex-col space-y-2">
-            <Link href="/order-history" className="w-full">
+            <Link href="/userDashboard/order-history" className="w-full">
               <Button className="w-full">View Order History</Button>
             </Link>
             <Link href="/" className="w-full">
@@ -102,7 +92,7 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="flex items-center mb-6">
-        <Link href="/cart">
+        <Link href="/userDashboard/cart">
           <Button variant="ghost" size="sm">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Cart
@@ -298,4 +288,3 @@ export default function CheckoutPage() {
     </div>
   )
 }
-

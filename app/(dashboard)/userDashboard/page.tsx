@@ -1,23 +1,10 @@
-"use client";
-import { useEffect, useState } from "react";
-import axios from "axios";
+// "use client";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
 import { StoreGrid } from "@/components/userComponents/store/store-grid";
 
 export default function HomePage() {
-//   const [stores, setStores] = useState([]);
 
-//   useEffect(() => {
-//     const fetchStores = async () => {
-//       try {
-//         const response = await axios.get("/api/User/AllStores"); // API route to get all sellers
-//         setStores(response.data.sellers);
-//       } catch (error) {
-//         console.error("Error fetching stores:", error);
-//       }
-//     };
-
-//     fetchStores();
-//   }, []);
 
   return (
     <main className="container mx-auto px-4 py-8">

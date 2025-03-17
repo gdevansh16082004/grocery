@@ -20,7 +20,7 @@ export default function CartPage() {
           </div>
           <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
           <p className="text-muted-foreground mb-6">Looks like you haven't added any products to your cart yet.</p>
-          <Link href="/">
+          <Link href="/userDashboard">
             <Button>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Continue Shopping
@@ -124,7 +124,7 @@ export default function CartPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Link href="/checkout" className="w-full">
+              <Link href="/userDashboard/checkout" className="w-full">
                 <Button className="w-full">Proceed to Checkout</Button>
               </Link>
             </CardFooter>
@@ -134,4 +134,3 @@ export default function CartPage() {
     </div>
   )
 }
-
